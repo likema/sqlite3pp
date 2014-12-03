@@ -1,3 +1,9 @@
+sqlite3pp (1.0.1-5) precise; urgency=low
+
+  * Add libsqlcipher-dev into libsqlcipherpp-dev.
+
+ -- Like Ma <likemartinma@gmail.com>  Thu, 04 Dec 2014 07:49:46 +0800
+
 sqlite3pp (1.0.1-4) unstable; urgency=low
 
   * Add sqlite3_changes wrapper.

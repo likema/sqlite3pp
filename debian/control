@@ -50,7 +50,7 @@ Description: SQLCipher++ shared library
 Package: libsqlcipherpp-dev
 Section: libdevel
 Architecture: any
-Depends: libsqlcipherpp1 (= ${binary:Version})
+Depends: libsqlcipherpp1 (= ${binary:Version}), libsqlcipher-dev
 Multi-Arch: same
 Description: SQLCipher++ development files
  SQLCipher++ is C++ wrapper of SQLCipher API. It supports almost all of
