@@ -533,7 +533,9 @@ namespace sqlite3pp
 
   transaction::transaction(database& db, bool fcommit, bool freserve) : db_(&db), fcommit_(fcommit)
   {
-    db_->execute(freserve ? "BEGIN IMMEDIATE" : "BEGIN");
+    int rc = db_->execute(freserve ? "BEGIN IMMEDIATE" : "BEGIN");
+    if (rc != SQLITE_OK)
+      throw database_error(*db_);
   }
 
   transaction::~transaction()
@@ -541,7 +543,7 @@ namespace sqlite3pp
     if (db_) {
       int rc = db_->execute(fcommit_ ? "COMMIT" : "ROLLBACK");
       if (rc != SQLITE_OK)
-	throw database_error(*db_);
+        throw database_error(*db_);
     }
   }
 
