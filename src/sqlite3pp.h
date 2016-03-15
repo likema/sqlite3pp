@@ -28,11 +28,11 @@
 #include <string>
 #include <stdexcept>
 
-#if HAVE_SQLCIPHER == 1
+#if defined(HAVE_SQLCIPHER) && HAVE_SQLCIPHER == 1
 # include <sqlcipher/sqlite3.h>
-#else /* HAVE_SQLCIPHER == 0 */
+#else /* !defined(HAVE_SQLCIPHER) || HAVE_SQLCIPHER == 0 */
 # include <sqlite3.h>
-#endif /* HAVE_SQLCIPHER == 1*/
+#endif /* defined(HAVE_SQLCIPHER) && HAVE_SQLCIPHER == 1 */
 
 #include <boost/utility.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -77,14 +77,16 @@ namespace sqlite3pp
     int attach(char const* dbname, char const* name);
     int detach(char const* name);
 
-#if HAVE_SQLCIPHER == 1
+#if defined(HAVE_SQLCIPHER) && HAVE_SQLCIPHER == 1
     int key(const void* key, int len);
     int rekey(const void* key, int len);
-#endif /* HAVE_SQLCIPHER == 1*/
+#endif /* defined(HAVE_SQLCIPHER) && HAVE_SQLCIPHER == 1 */
 
     long long int last_insert_rowid() const;
 
     int changes() const;
+
+    int backup(database* dest_db, void(*xProgress)(int, int) = 0, int pages = 5, int msec = 250);
 
     int error_code() const;
     char const* error_msg() const;

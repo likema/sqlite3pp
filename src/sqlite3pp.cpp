@@ -118,7 +118,7 @@ namespace sqlite3pp
     return executef("DETACH '%s'", name);
   }
 
-#if HAVE_SQLCIPHER == 1
+#if defined(HAVE_SQLCIPHER) && HAVE_SQLCIPHER == 1
   int database::key(const void* key, int len)
   {
     return sqlite3_key(db_, key, len);
@@ -128,7 +128,7 @@ namespace sqlite3pp
   {
     return sqlite3_rekey(db_, key, len);
   }
-#endif /* HAVE_SQLCIPHER == 1*/
+#endif /* defined(HAVE_SQLCIPHER) && HAVE_SQLCIPHER == 1 */
 
   void database::set_busy_handler(busy_handler h)
   {
@@ -168,6 +168,34 @@ namespace sqlite3pp
   int database::changes() const
   {
     return sqlite3_changes(db_);
+  }
+
+  int database::backup(database* dest_db, void(*xProgress)(int, int), int pages, int msec)
+  {
+    if (!dest_db) {
+      return SQLITE_ERROR;
+    }
+
+    sqlite3* dest = dest_db->db_;
+    sqlite3_backup* backup = sqlite3_backup_init(dest, "main", db_, "main");
+    if (backup) {
+      int rc = SQLITE_OK;
+      do {
+        rc = sqlite3_backup_step(backup, pages);
+        if (xProgress) {
+          xProgress(sqlite3_backup_remaining(backup),
+                    sqlite3_backup_pagecount(backup));
+        }
+
+        if (rc == SQLITE_OK || rc == SQLITE_BUSY || rc == SQLITE_LOCKED) {
+          sqlite3_sleep(msec);
+        }
+      } while (rc == SQLITE_OK || rc == SQLITE_BUSY || rc == SQLITE_LOCKED);
+
+      (void)sqlite3_backup_finish(backup);
+    }
+
+    return sqlite3_errcode(dest);
   }
 
   int database::error_code() const
