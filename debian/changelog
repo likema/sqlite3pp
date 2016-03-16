@@ -1,3 +1,9 @@
+sqlite3pp (1.0.3) unstable; urgency=low
+
+  * Add sqlite3_backup wrapper.
+
+ -- Like Ma <likemartinma@gmail.com>  Wed, 16 Mar 2016 15:53:47 +0800
+
 sqlite3pp (1.0.2) unstable; urgency=low
 
   * Bump version for building error in Debian 8.
