@@ -3,7 +3,7 @@ Section: libs
 Priority: optional
 Maintainer: Like Ma <likemartinma@gmail.com>
 Build-Depends: debhelper (>= 8.0.0), cmake, libsqlite3-dev, libsqlcipher-dev,
-               libboost1.46-dev | libboost1.48-dev | libboost1.53-dev | libboost1.54-dev | libboost1.55-dev
+               libboost1.60-dev | libboost1.58-dev | libboost1.55-dev | libboost1.54-dev | libboost1.53-dev | libboost1.48-dev | libboost1.46-dev | libboost-dev
 Standards-Version: 3.9.2
 Homepage: https://github.com/iwongu/sqlite3pp
 Vcs-Git: https://github.com/iwongu/sqlite3pp.git
